@@ -67,7 +67,7 @@ properties:
     datadog: null
     datadog_enabled: false
     director_account:
-      user: (( grab meta.bosh.users.hm.username )) 
+      user: (( grab meta.bosh.users.hm.username ))
       password: (( grab meta.bosh.users.hm.password ))
     graphite: null
     graphite_enabled: false
