@@ -1,0 +1,87 @@
+---
+meta:
+  vcap_password: (( param "Specify the password for the vcap user" ))
+  ntp: (( param "Specify the NTP servers for your BOSH and its VMs" ))
+
+  bosh:
+    blobstore:
+      agent:
+        user: (( param "Specify the username for BOSH agents to hit the blobstore with" ))
+        pass: (( param "Specify the password for BOSH agents to hit the blobstore with" ))
+      director:
+        user: (( param "Specify the username for BOSH directors to hit the blobstore with" ))
+        pass: (( param "Specify the password for BOSH directors to hit the blobstore with" ))
+    users:
+    - name: hm
+      username: (( param "Specify the username for the health-monitor to contact the director with" ))
+      password: (( param "Specify the password for the health-monitor to contact the director with" ))
+    - name: admin
+      username: (( param "Specify the admin account username for the director" ))
+      password: (( param "Specify the admin account password for the director" ))
+    db:
+      user: (( param "Specify the username for the BOSH postgres database" ))
+      pass: (( param "Specify the password for the BOSH postgres database" ))
+    redis:
+      pass: (( param "Specify the password for the BOSH Redis instance" ))
+    nats:
+      user: (( param "Specify the username for the BOSH nats instance" ))
+      pass: (( param "Specify the password for the BOSH nats instance" ))
+  vcenter:
+    user: (( param "Specify the username to connect to vCenter with" ))
+    pass: (( param "Specify the password to connect to vCenter with" ))
+
+properties:
+  agent:
+    mbus: (( concat "nats://" meta.bosh.nats.user ":" meta.bosh.nats.pass "@" jobs.bosh.networks.default.static_ips.0 ":" properties.nats.port ))
+  blobstore:
+    address: (( grab jobs.bosh.networks.default.static_ips.0 ))
+    agent:
+      user: (( grab meta.bosh.blobstore.agent.user ))
+      password: (( grab meta.bosh.blobstore.agent.pass ))
+    director:
+      user: (( grab meta.bosh.blobstore.director.user ))
+      password: (( grab meta.bosh.blobstore.director.pass ))
+    port: 25250
+    provider: dav
+  director:
+    address: (( grab jobs.bosh.networks.default.static_ips.0 ))
+    cpi_job: (( param "Specify the CPI for your BOSH deployment" ))
+    db:
+      adapter: postgres
+      database: bosh
+      host: 127.0.0.1
+      listen_address: 127.0.0.1
+      user: (( grab meta.bosh.db.user ))
+      password: (( grab meta.bosh.db.pass ))
+    max_threads: 4
+    name: (( grab name ))
+    user_management:
+      provider: local
+      local:
+        users:
+        - name: (( grab meta.bosh.users.hm.username ))
+          password: (( grab meta.bosh.users.hm.password ))
+        - name: (( grab meta.bosh.users.admin.username ))
+          password: (( grab meta.bosh.users.admin.password ))
+  hm:
+    datadog: null
+    datadog_enabled: false
+    director_account:
+      user: (( grab meta.bosh.users.hm.username )) 
+      password: (( grab meta.bosh.users.hm.password ))
+    graphite: null
+    graphite_enabled: false
+    pagerduty: null
+    pagerduty_enabled: false
+    resurrector_enabled: true
+  nats:
+    address: 127.0.0.1
+    user: (( grab meta.bosh.nats.user ))
+    password: (( grab meta.bosh.nats.pass ))
+    port: 4222
+  postgres: (( grab properties.director.db ))
+  ntp: (( grab meta.ntp ))
+  redis:
+    address: 127.0.0.1
+    listen_address: 127.0.0.1
+    password: (( grab meta.bosh.redis.pass ))

@@ -1,0 +1,25 @@
+---
+jobs:
+- instances: 1
+  name: bosh
+  networks:
+  - name: default
+    static_ips: (( static_ips(0) ))
+  persistent_disk_pool: (( param "Specify a disk_pool for your BOSH vm" ))
+  resource_pool: (( param "Specify the resource pool to put your BOSH vm into" ))
+  templates:
+  - name: postgres
+    release: bosh
+  - name: nats
+    release: bosh
+  - name: blobstore
+    release: bosh
+  - name: director
+    release: bosh
+  - name: health_monitor
+    release: bosh
+  - name: shield-agent
+    release: shield
+  - name: agent-pgtools
+    release: shield
+  properties: {} # required by bosh-init until https://github.com/cloudfoundry/bosh-init/issues/71 is resolved

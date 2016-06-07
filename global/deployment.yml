@@ -1,0 +1,16 @@
+---
+name: (( param "Please specify a name for your BOSH deployment" ))
+
+releases: (( param "bosh-init deployments require a list of BOSH releases to deploy" ))
+
+resource_pools: (( param "Please define one or more resource pools for your BOSH deployment" ))
+disk_pools:     (( param "Please define one or more disk pools for your BOSH deployment" ))
+
+cloud_provider:
+  template: (( param "Please define the Cloud Provider to use for your BOSH deployment" ))
+  properties: (( param "Please define the configuration for your BOSH Cloud Provider" ))
+
+
+networks:
+- name: default
+  subnets: (( param "Specify subnets for your BOSH vm's network" ))

@@ -1,0 +1,12 @@
+---
+resource_pools:
+- name: bosh
+  cloud_properties:
+    cpu: 2
+    disk: 40960
+    ram: 4192
+  network: default
+  env:
+    bosh:
+      password: (( grab meta.vcap_password ))
+  stemcell: (( grab meta.stemcell ))
