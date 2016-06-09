@@ -22,4 +22,5 @@ jobs:
     release: shield
   - name: agent-pgtools
     release: shield
+  # Some CPIs may also require the registry job. If so, that should be added at the site level
   properties: {} # required by bosh-init until https://github.com/cloudfoundry/bosh-init/issues/71 is resolved
