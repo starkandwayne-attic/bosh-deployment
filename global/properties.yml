@@ -26,9 +26,6 @@ meta:
     nats:
       user: natsuser
       pass: (( param "Specify the password for the BOSH nats instance" ))
-  vcenter:
-    user: (( param "Specify the username to connect to vCenter with" ))
-    pass: (( param "Specify the password to connect to vCenter with" ))
 
 properties:
   agent:

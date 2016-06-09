@@ -1,4 +1,9 @@
 ---
+meta:
+  vcenter:
+    user: (( param "Specify the username to connect to vCenter with" ))
+    pass: (( param "Specify the password to connect to vCenter with" ))
+
 cloud_provider:
   mbus: (( concat "https://mbus:mbus-password@" jobs.bosh.networks.default.static_ips.0 ":6868" ))
   properties:
