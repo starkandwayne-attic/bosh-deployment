@@ -1,0 +1,26 @@
+---
+cloud_provider:
+  mbus: (( concat "https://mbus:mbus-password@" jobs.bosh.networks.default.static_ips.0 ":6868" ))
+
+  template:
+    name: aws_cpi
+    release: bosh-aws-cpi
+
+  properties:
+    agent:
+      mbus: https://mbus:mbus-password@0.0.0.0:6868
+    blobstore:
+      path: /var/vcap/micro_bosh/data/cache
+      provider: local
+    ntp: (( grab meta.ntp ))
+    aws:
+      access_key_id: (( param "What is your Access Key ID?" ))
+      secret_access_key: (( param "What is your Secret Access Key?" ))
+      default_key_name: (( param "What is your full key name?" ))
+      default_security_groups: (( param "What Security Groups?" ))
+      region: (( param "What region are you in?" ))
+
+properties:
+  director:
+    cpi_job: aws_cpi
+  vcenter: (( grab cloud_provider.properties.vcenter ))

@@ -1,0 +1,14 @@
+---
+resource_pools:
+- name: bosh
+  cloud_properties:
+    instance_type: m3.xlarge
+    ephemeral_disk:
+      type: gp2
+      size: 25_000
+    availability_zone: (( param "What Availability Zone are you in?" ))
+  network: default
+  env:
+    bosh:
+      password: (( grab meta.vcap_password ))
+  stemcell: (( grab meta.stemcell ))
