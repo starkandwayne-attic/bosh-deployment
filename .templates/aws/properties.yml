@@ -23,4 +23,4 @@ cloud_provider:
 properties:
   director:
     cpi_job: aws_cpi
-  vcenter: (( grab cloud_provider.properties.vcenter ))
+  aws: (( grab cloud_provider.properties.aws ))
