@@ -1,8 +1,6 @@
 ---
 name: (( param "Please specify a name for your BOSH deployment" ))
 
-releases: (( param "bosh-init deployments require a list of BOSH releases to deploy" ))
-
 resource_pools: (( param "Please define one or more resource pools for your BOSH deployment" ))
 disk_pools:     (( param "Please define one or more disk pools for your BOSH deployment" ))
 
