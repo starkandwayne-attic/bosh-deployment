@@ -1,0 +1,77 @@
+#!/bin/bash
+set -e
+
+safe targets
+read -p "Use this target?  [yes or no] " YESNO
+if [[ ${YESNO} != "yes" ]]; then
+  echo "ABORTING..."
+  exit 1
+fi
+
+
+
+TYPE=$(cat ${DEPLOYMENT_ROOT}/${DEPLOYMENT_SITE}/site/.iaas)
+case ${TYPE} in
+(aws)
+  read -p "What is your AWS Access Key?  " AWS_ACCESS_KEY
+  read -p "What is your Secret Key?      " AWS_SECRET_KEY
+  read -p "What AWS region do you want to deploy to?  " AWS_REGION
+  ;;
+esac
+
+
+if ! safe read secret/handshake &>/dev/null; then
+  cat > ${ENVIRONMENT_ROOT}/credentials.yml <<EOF
+---
+meta:
+  aws:
+    access_key: ${AWS_ACCESS_KEY}
+    secret_key: ${AWS_SECRET_KEY}
+  vcap_password: (( param "Please generate a SHA-512 crypted password the vcap system user" ))
+  bosh:
+    blobstore:
+      agent:
+        pass: (( param "Please generate a password for the BOSH blobstore agent user" ))
+      director:
+        pass: (( param "Please generate a password for the BOSH blobstore director user" ))
+    db:
+      pass: (( param "Please generate a password for the BOSH database" ))
+    nats:
+      pass: (( param "Please generate a password for the NATS message bus" ))
+    users:
+      - name: admin
+        password: (( param "Please generate a password for the admin user" ))
+      - name: hm
+        password: (( param "Please generate a password for the hm user" ))
+EOF
+else
+  echo "Setting up credentials in vault, under ${VAULT_PREFIX}"
+  safe gen ${VAULT_PREFIX}/blobstore/agent    password -- \
+       gen ${VAULT_PREFIX}/blobstore/director password -- \
+       gen ${VAULT_PREFIX}/db                 password -- \
+       gen ${VAULT_PREFIX}/nats               password -- \
+       gen ${VAULT_PREFIX}/users/admin        password -- \
+       gen ${VAULT_PREFIX}/users/hm           password -- \
+       gen ${VAULT_PREFIX}/vcap               password -- \
+       write ${VAULT_PREFIX}/aws access_key=${AWS_ACCESS_KEY} \
+                                 secret_key=${AWS_SECRET_KEY} -- \
+       fmt crypt-sha512 ${VAULT_PREFIX}/vcap  password crypt
+  safe tree ${VAULT_PREFIX} || true
+
+  cat > ${ENVIRONMENT_ROOT}/credentials.yml <<EOF
+---
+meta:
+  aws:
+    access_key: (( vault \$VAULT_PREFIX "/aws:access_key" ))
+    secret_key: (( vault \$VAULT_PREFIX "/aws:secret_key" ))
+EOF
+fi
+
+cat > ${ENVIRONMENT_ROOT}/properties.yml <<EOF
+---
+meta:
+  aws:
+    region: ${AWS_REGION}
+EOF
+
+echo
