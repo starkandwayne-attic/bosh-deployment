@@ -6,7 +6,7 @@ resource_pools:
     ephemeral_disk:
       type: gp2
       size: 25_000
-    availability_zone: (( param "What Availability Zone are you in?" ))
+    availability_zone: (( concat meta.aws.region "a" ))
   network: default
   env:
     bosh:

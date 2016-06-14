@@ -1,4 +1,27 @@
 ---
+meta:
+  aws:
+    access_key: (( param "Please supply an AWS Access Key" ))
+    secret_key: (( param "Please supply an AWS Secret Key" ))
+    region:     us-west-2
+
+  vcap_password: (( vault $VAULT_PREFIX "/vcap:crypt" ))
+  bosh:
+    blobstore:
+      agent:
+        pass: (( vault $VAULT_PREFIX "/blobstore/agent:password" ))
+      director:
+        pass: (( vault $VAULT_PREFIX "/blobstore/director:password" ))
+    db:
+      pass: (( vault $VAULT_PREFIX "/db:password" ))
+    nats:
+      pass: (( vault $VAULT_PREFIX "/nats:password" ))
+    users:
+      - name: admin
+        password: (( vault $VAULT_PREFIX "/users/admin:password" ))
+      - name: hm
+        password: (( vault $VAULT_PREFIX "/users/hm:password" ))
+
 cloud_provider:
   mbus: (( concat "https://mbus:mbus-password@" jobs.bosh.networks.default.static_ips.0 ":6868" ))
 
@@ -20,11 +43,11 @@ cloud_provider:
       provider: local
     ntp: (( grab meta.ntp ))
     aws:
-      access_key_id: (( param "What is your Access Key ID?" ))
-      secret_access_key: (( param "What is your Secret Access Key?" ))
-      default_key_name: (( param "What is your full key name?" ))
+      access_key_id:           (( grab meta.aws.access_key ))
+      secret_access_key:       (( grab meta.aws.secret_key ))
+      default_key_name:        (( param "What is your full key name?" ))
       default_security_groups: (( param "What Security Groups?" ))
-      region: (( param "What region are you in?" ))
+      region:                  (( grab meta.aws.region ))
 
 properties:
   director:
