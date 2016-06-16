@@ -1,29 +1,29 @@
 ---
 meta:
-  vcap_password: (( param "Specify the password for the vcap user" ))
+  vcap_password: (( vault meta.vault_prefix "/vcap:crypt" ))
   ntp: [ 0.pool.ntp.org, 1.pool.ntp.org ]
 
   bosh:
     blobstore:
       agent:
         user: blobstore-user
-        pass: (( param "Specify the password for BOSH agents to hit the blobstore with" ))
+        pass: (( vault meta.vault_prefix "/blobstore/agent:password" ))
       director:
         user: director-user
-        pass: (( param "Specify the password for BOSH directors to hit the blobstore with" ))
+        pass: (( vault meta.vault_prefix "/blobstore/director:password" ))
     users:
     - name: hm
       username: resurrector
-      password: (( param "Specify the password for the health-monitor to contact the director with" ))
+      password: (( vault meta.vault_prefix "/users/hm:password" ))
     - name: admin
       username: admin
-      password: (( param "Specify the admin account password for the director" ))
+      password: (( vault meta.vault_prefix "/users/admin:password" ))
     db:
       user: boshdb
-      pass: (( param "Specify the password for the BOSH postgres database" ))
+      pass: (( vault meta.vault_prefix "/db:password" ))
     nats:
       user: natsuser
-      pass: (( param "Specify the password for the BOSH nats instance" ))
+      pass: (( vault meta.vault_prefix "/nats:password" ))
 
 properties:
   agent:
