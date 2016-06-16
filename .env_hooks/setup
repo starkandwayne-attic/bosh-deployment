@@ -39,8 +39,8 @@ else
        gen ${VAULT_PREFIX}/blobstore/director password -- \
        gen ${VAULT_PREFIX}/db                 password -- \
        gen ${VAULT_PREFIX}/nats               password -- \
-       gen ${VAULT_PREFIX}/users/admin        password -- \
-       gen ${VAULT_PREFIX}/users/hm           password -- \
+       gen 30 ${VAULT_PREFIX}/users/admin        password -- \
+       gen 30 ${VAULT_PREFIX}/users/hm           password -- \
        gen ${VAULT_PREFIX}/vcap               password -- \
        fmt crypt-sha512 ${VAULT_PREFIX}/vcap  password crypt
   safe tree ${VAULT_PREFIX} || true
