@@ -13,3 +13,5 @@ networks:
 - name: default
   type: manual
   subnets: (( param "Specify subnets for your BOSH vm's network" ))
+
+compilation: (( param "Define the compilation properties for your BOSH deployment (or nullify if bosh-lite)" ))

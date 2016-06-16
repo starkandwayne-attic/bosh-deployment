@@ -4,8 +4,6 @@ meta:
     access_key: (( param "Please supply an AWS Access Key" ))
     secret_key: (( param "Please supply an AWS Secret Key" ))
     region:     (( param "What AWS region are you going to use?" ))
-    azs:
-      z1: (( param "What Availability Zone will BOSH be in?" ))
 
   vcap_password: (( vault $VAULT_PREFIX "/vcap:crypt" ))
   bosh:

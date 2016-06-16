@@ -10,3 +10,12 @@ resource_pools:
     bosh:
       password: (( grab meta.vcap_password ))
   stemcell: (( grab meta.stemcell ))
+
+compilation:
+  network: default
+  workers: 2
+  reuse_compilation_vms: true
+  cloud_properties:
+    cpu:  2
+    disk: 4096
+    ram:  3840

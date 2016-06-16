@@ -1,4 +1,9 @@
 ---
+meta:
+  aws:
+    azs:
+      z1: (( param "What Availability Zone will BOSH be in?" ))
+
 resource_pools:
 - name: bosh
   cloud_properties:
@@ -12,3 +17,11 @@ resource_pools:
     bosh:
       password: (( grab meta.vcap_password ))
   stemcell: (( grab meta.stemcell ))
+
+compilation:
+  network: default
+  workers: 2
+  reuse_compilation_vms: true
+  cloud_properties:
+    instance_type: c4.large
+    availability_zone: (( grab meta.aws.azs.z1 ))
