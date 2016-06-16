@@ -3,6 +3,15 @@ meta:
   vcenter:
     user: (( param "Specify the username to connect to vCenter with" ))
     pass: (( param "Specify the password to connect to vCenter with" ))
+    datacenter:
+      name: (( param "What is the name of your vCenter datacenter?" ))
+      datastore_pattern: (( param "What datastores do you want to use for ephemeral disks?" ))
+      disk_path: (( param "What folder path should VM disks be stored in?" ))
+      persistent_datastore_pattern: (( param "What datastores do you want to use for persistent disks?" ))
+      template_folder: (( param "What folder path should vm templates (stemcells) be stored in?" ))
+      vm_folder: (( param "What folder path should VMs be stored in?" ))
+      clusters: (( param "What clusters should BOSH deploy VMs to?" ))
+
 
 cloud_provider:
   mbus: (( concat "https://mbus:mbus-password@" jobs.bosh.networks.default.static_ips.0 ":6868" ))
@@ -15,13 +24,7 @@ cloud_provider:
     ntp: (( grab meta.ntp ))
     vcenter:
       datacenters:
-      - name: (( param "What is the name of your vCenter datacenter?" ))
-        datastore_pattern: (( param "What datastores do you want to use for ephemeral disks?" ))
-        disk_path: (( param "What folder path should VM disks be stored in?" ))
-        persistent_datastore_pattern: (( param "What datastores do you want to use for persistent disks?" ))
-        template_folder: (( param "What folder path should vm templates (stemcells) be stored in?" ))
-        vm_folder: (( param "What folder path should VMs be stored in?" ))
-        clusters: (( param "What clusters should BOSH deploy VMs to?" ))
+      - (( grab meta.vcenter.datacenter ))
       address: (( param "What is the address of your vCenter Server?" ))
       user: (( grab meta.vcenter.user ))
       password: (( grab meta.vcenter.pass ))
