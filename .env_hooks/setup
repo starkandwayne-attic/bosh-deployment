@@ -1,11 +1,13 @@
 #!/bin/bash
 set -e
 
-safe targets
-read -p "Use this target?  [yes or no] " YESNO
-if [[ ${YESNO} != "yes" ]]; then
-  echo "ABORTING..."
-  exit 1
+if [[ -f ${HOME}/.saferc ]]; then
+  safe targets
+  read -p "Use this target?  [yes or no] " YESNO
+  if [[ ${YESNO} != "yes" ]]; then
+    echo "ABORTING..."
+    exit 1
+  fi
 fi
 
 
