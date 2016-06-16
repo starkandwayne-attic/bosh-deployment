@@ -76,3 +76,7 @@ properties:
     port: 4222
   postgres: (( grab properties.director.db ))
   ntp: (( grab meta.ntp ))
+
+  shield:
+    agent:
+      authorized_keys: (( param "Specify the SSH public key from this environment's SHIELD daemon" ))

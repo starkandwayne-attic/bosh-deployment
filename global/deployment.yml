@@ -11,4 +11,5 @@ cloud_provider:
 
 networks:
 - name: default
+  type: manual
   subnets: (( param "Specify subnets for your BOSH vm's network" ))
