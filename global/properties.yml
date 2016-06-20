@@ -41,6 +41,7 @@ properties:
   director:
     address: (( grab jobs.bosh.networks.default.static_ips.0 ))
     cpi_job: (( param "Specify the CPI for your BOSH deployment" ))
+    generate_vm_passwords: true
     db:
       adapter: postgres
       database: bosh
