@@ -5,23 +5,6 @@ meta:
     secret_key: (( param "Please supply an AWS Secret Key" ))
     region:     (( param "What AWS region are you going to use?" ))
 
-  vcap_password: (( vault $VAULT_PREFIX "/vcap:crypt" ))
-  bosh:
-    blobstore:
-      agent:
-        pass: (( vault $VAULT_PREFIX "/blobstore/agent:password" ))
-      director:
-        pass: (( vault $VAULT_PREFIX "/blobstore/director:password" ))
-    db:
-      pass: (( vault $VAULT_PREFIX "/db:password" ))
-    nats:
-      pass: (( vault $VAULT_PREFIX "/nats:password" ))
-    users:
-      - name: admin
-        password: (( vault $VAULT_PREFIX "/users/admin:password" ))
-      - name: hm
-        password: (( vault $VAULT_PREFIX "/users/hm:password" ))
-
 cloud_provider:
   mbus: (( concat "https://mbus:mbus-password@" jobs.bosh.networks.default.static_ips.0 ":6868" ))
 
