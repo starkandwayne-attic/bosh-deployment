@@ -1,0 +1,24 @@
+---
+meta:
+  openstack:
+    azs:
+      z1: nova
+
+resource_pools:
+- name: bosh
+  cloud_properties:
+    instance_type: m1.large
+    availability_zone: (( grab meta.openstack.azs.z1 ))
+  network: default
+  env:
+    bosh:
+      password: (( grab meta.vcap_password ))
+  stemcell: (( grab meta.stemcell ))
+
+compilation:
+  network: default
+  workers: 2
+  reuse_compilation_vms: true
+  cloud_properties:
+    instance_type: m1.large
+    availability_zone: (( grab meta.openstack.azs.z1 ))

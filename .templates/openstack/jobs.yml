@@ -1,0 +1,28 @@
+---
+jobs:
+- name: bosh
+  persistent_disk_pool: default
+  resource_pool: bosh
+  networks:
+  - name: default
+    default: [dns, gateway]
+
+  templates:
+  - name: openstack_cpi
+    release: bosh-openstack-cpi
+  - name: registry
+    release: bosh
+
+properties:
+  registry:
+    address: (( grab jobs.bosh.networks[0].static_ips[0] ))
+    host:    (( grab jobs.bosh.networks[0].static_ips[0] ))
+    db:      (( grab properties.postgres ))
+
+    username: admin
+    password: admin
+    port: 25777
+    http:
+      user:     (( grab properties.registry.username ))
+      password: (( grab properties.registry.password ))
+      port:     (( grab properties.registry.port ))
