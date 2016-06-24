@@ -1,0 +1,6 @@
+networks:
+- name: default
+  type: manual
+
+- name: public
+  type: vip
