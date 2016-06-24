@@ -1,4 +1,4 @@
-Site Definitions (aws)
+Site Definitions (openstack)
 
 This directory contains templates that describe the infrastructure-specific
 settings and site-wide properties.  The templates are merged in the following order:
