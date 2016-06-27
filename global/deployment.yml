@@ -15,3 +15,8 @@ networks:
   subnets: (( param "Specify subnets for your BOSH vm's network" ))
 
 compilation: (( param "Define the compilation properties for your BOSH deployment (or nullify if bosh-lite)" ))
+
+update:
+  canaries: 1
+  max_in_flight: 1
+  serial: true
