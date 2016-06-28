@@ -80,4 +80,4 @@ properties:
 
   shield:
     agent:
-      authorized_keys: (( param "Specify the SSH public key from this environment's SHIELD daemon" ))
+      daemon_public_key: (( param "Specify the SSH public key from this environment's SHIELD daemon" ))
