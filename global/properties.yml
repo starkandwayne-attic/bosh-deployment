@@ -2,6 +2,7 @@
 meta:
   vcap_password: (( vault meta.vault_prefix "/vcap:crypt" ))
   ntp: [ 0.pool.ntp.org, 1.pool.ntp.org ]
+  shield_public_key: (( param "Specify the SSH public key from this environment's SHIELD daemon" ))
 
   bosh:
     blobstore:
@@ -80,4 +81,4 @@ properties:
 
   shield:
     agent:
-      daemon_public_key: (( param "Specify the SSH public key from this environment's SHIELD daemon" ))
+      daemon_public_key: (( grab meta.shield_public_key ))

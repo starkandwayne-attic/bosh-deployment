@@ -11,6 +11,7 @@ meta:
       template_folder: (( param "What folder path should vm templates (stemcells) be stored in?" ))
       vm_folder: (( param "What folder path should VMs be stored in?" ))
       clusters: (( param "What clusters should BOSH deploy VMs to?" ))
+    address: (( param "What is the address of your vCenter Server?" ))
 
 
 cloud_provider:
@@ -23,9 +24,9 @@ cloud_provider:
       provider: local
     ntp: (( grab meta.ntp ))
     vcenter:
+      address: (( grab meta.vcenter.address ))
       datacenters:
       - (( grab meta.vcenter.datacenter ))
-      address: (( param "What is the address of your vCenter Server?" ))
       user: (( grab meta.vcenter.user ))
       password: (( grab meta.vcenter.pass ))
   template:

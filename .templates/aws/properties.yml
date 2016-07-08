@@ -4,6 +4,9 @@ meta:
     access_key: (( param "Please supply an AWS Access Key" ))
     secret_key: (( param "Please supply an AWS Secret Key" ))
     region:     (( param "What AWS region are you going to use?" ))
+    ssh_key_name: (( param "What AWS keypair should be used for the vcap user?" ))
+    private_key: (( param "What private key will be used for establishing the ssh_tunnel (bosh-init only)?" ))
+    default_sgs: (( param "What security groups should VMs be placed in, if none are specified in the deployment manifest?" ))
 
 cloud_provider:
   mbus: (( concat "https://mbus:mbus-password@" jobs.bosh.networks.default.static_ips.0 ":6868" ))
@@ -16,7 +19,7 @@ cloud_provider:
     port: 22
     user: vcap
     host: (( grab jobs.bosh.networks[0].static_ips[0] ))
-    private_key: (( param "What is the local path to the Amazon Private Key for this deployment?" ))
+    private_key: (( grab meta.aws.private_key ))
 
   properties:
     agent:
@@ -28,8 +31,8 @@ cloud_provider:
     aws:
       access_key_id:           (( grab meta.aws.access_key ))
       secret_access_key:       (( grab meta.aws.secret_key ))
-      default_key_name:        (( param "What is your full key name?" ))
-      default_security_groups: (( param "What Security Groups?" ))
+      default_key_name:        (( grab meta.aws.ssh_key_name ))
+      default_security_groups: (( grab meta.aws.default_sgs ))
       region:                  (( grab meta.aws.region ))
 
 properties:
