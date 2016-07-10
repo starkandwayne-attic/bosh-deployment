@@ -23,6 +23,42 @@ environment, yet still be able to pull in changes from upstream down
 the road.
 
 
+Jurassic BOSH
+======================================
+
+Jurassic BOSH is a paradigm for deploying multiple BOSH directors to eliminate
+much of the time-sink created by `bosh-init`. Its highly useful in a situation
+where you have many BOSH directors (one for each of your staging, prod, dev, etc.
+environments). Essentially, you deploy a Proto BOSH via `bosh-init`, and then
+deploy the environment-specific BOSHes on top of your Proto BOSH as regular
+BOSH deployments.
+
+Doing this with these templates is quite easy! To stand up your Proto BOSH:
+
+```
+$ genesis new deployment --template bosh
+$ cd bosh-deployments
+$ genesis new site --template <aws|vsphere|openstack> site-name
+$ genesis new env --type bosh-init site-name proto
+$ cd site-name/proto
+$ make deploy # ... and fill in all the required parameters to deploy your BOSH
+```
+
+Once that bosh has been stood up, you can target it with the BOSH cli, and
+start creating your environment-specific BOSHen:
+
+```
+$ bosh target https://your.director.ip:25555 site-name-proto-bosh
+$ genesis new env --type normal site-name staging
+$ cd ../staging # assuming you were still in the site-name/proto directory
+$ make deploy # ... and fill in all the required parameters to deploy your BOSH
+```
+
+The deployment in `site-name/proto` will get deployed via `bosh-init`, while the
+`site-name/staging` deployment will be deployed via BOSH against the `site-name-proto-bosh`
+director. As of now, the `--type normal` flag is optional for regular BOSHen, since it
+is the default method for deploying in `genesis`
+
 
 vSphere Sites
 ======================================
