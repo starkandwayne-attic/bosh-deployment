@@ -5,6 +5,8 @@ resource_pools:
     cpu: 2
     disk: 40960
     ram: 4192
+    datacenter:
+      clusters: (( grab meta.vcenter.datacenter.clusters ))
   network: default
   env:
     bosh:
