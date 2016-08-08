@@ -10,10 +10,14 @@ if [[ -f ${HOME}/.saferc ]]; then
   fi
 fi
 
-
-
 if ! safe read secret/handshake &>/dev/null; then
-  cat > ${ENVIRONMENT_ROOT}/credentials.yml <<EOF
+  read -p "Vault is not working. Do you want to fix vault first? (Otherwise you have to generate credentials manually). [yes or no]" YESNO
+  if [[ ${YESNO} != "no" && ${YESNO} != "n" ]]; then
+    echo "ABORTING..."
+    exit 1
+  else
+    echo -e "\nYou will need generate credentials listed in ${ENVIRONMENT_ROOT}/credentials.yml manually and save them into your vault when your vault is working again."
+    cat > ${ENVIRONMENT_ROOT}/credentials.yml <<EOF
 ---
 meta:
   vcap_password: (( param "Please generate a SHA-512 crypted password the vcap system user" ))
@@ -33,6 +37,7 @@ meta:
       - name: hm
         password: (( param "Please generate a password for the hm user" ))
 EOF
+  fi
 else
   echo "Setting up credentials in vault, under ${VAULT_PREFIX}"
   safe gen ${VAULT_PREFIX}/blobstore/agent    password -- \
