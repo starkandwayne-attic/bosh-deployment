@@ -26,6 +26,10 @@ meta:
       user: natsuser
       pass: (( vault meta.vault_prefix "/nats:password" ))
 
+    registry:
+      user: registry-user
+      pass: (( vault meta.vault_prefix "/registry:password" ))
+
 properties:
   agent:
     mbus: (( concat "nats://" meta.bosh.nats.user ":" meta.bosh.nats.pass "@" jobs.bosh.networks.default.static_ips.0 ":" properties.nats.port ))
