@@ -31,6 +31,8 @@ meta:
       pass: (( param "Please generate a password for the BOSH database" ))
     nats:
       pass: (( param "Please generate a password for the NATS message bus" ))
+    registry:
+      pass: (( param "Please generate a password for the Registry" ))
     users:
       - name: admin
         password: (( param "Please generate a password for the admin user" ))
@@ -44,8 +46,9 @@ else
        gen ${VAULT_PREFIX}/blobstore/director password -- \
        gen ${VAULT_PREFIX}/db                 password -- \
        gen ${VAULT_PREFIX}/nats               password -- \
-       gen 30 ${VAULT_PREFIX}/users/admin        password -- \
-       gen 30 ${VAULT_PREFIX}/users/hm           password -- \
+       gen ${VAULT_PREFIX}/registry           password -- \
+       gen 30 ${VAULT_PREFIX}/users/admin     password -- \
+       gen 30 ${VAULT_PREFIX}/users/hm        password -- \
        gen ${VAULT_PREFIX}/vcap               password -- \
        fmt crypt-sha512 ${VAULT_PREFIX}/vcap  password crypt
   safe tree ${VAULT_PREFIX} || true

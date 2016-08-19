@@ -15,8 +15,8 @@ properties:
     host:    (( grab jobs.bosh.networks[0].static_ips[0] ))
     db:      (( grab properties.postgres ))
 
-    username: admin
-    password: admin
+    username: (( grab meta.bosh.registry.user ))
+    password: (( grab meta.bosh.registry.pass ))
     port: 25777
     http:
       user:     (( grab properties.registry.username ))
