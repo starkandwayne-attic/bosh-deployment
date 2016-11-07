@@ -81,6 +81,17 @@ infrastructure.
 
 
 
+Google Cloud Platform (Google) Sites
+======================================
+
+The `google` template will set you up with a structure suitable for
+deploying BOSH directors to Google Cloud Plaftorm infrastructure.
+
+    genesis new site --template google <name>
+
+
+
+
 Notes
 ======================================
 
