@@ -85,4 +85,5 @@ properties:
 
   shield:
     agent:
+      ip: (( grab jobs.bosh.networks.default.static_ips.0 ))
       daemon_public_key: (( grab meta.shield_public_key ))
