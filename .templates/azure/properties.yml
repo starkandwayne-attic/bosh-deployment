@@ -1,0 +1,50 @@
+---
+meta:
+  azure:
+    environment: (( param "Azure environment (usually AzureCloud, may be AzureUSGovernment or AzureChinaCloud" ))
+    resource_group: (( param "Azure resource group for BOSH VMs, NICs, and storage accounts" ))
+    storage_account: (( param "Azure storage account name pattern" ))
+    client_id: (( param "Please supply an Azure Client ID" ))
+    client_secret: (( param "Please supply an Azure Client Secret" ))
+    tenant_id: (( param "Please supply an Azure Tenant ID" ))
+    subscription_id: (( param "Please supply an Azure Subscription ID" ))
+    ssh_public_key_data: (( param "What public key should be used for the vcap user?" ))
+    ssh_private_key_file: (( param "What private key will be used for establishing the ssh_tunnel (bosh-init only)?" ))
+    default_nsg: (( param "What network security groups should VMs be placed in?" ))
+
+cloud_provider:
+  mbus: (( concat "https://mbus:mbus-password@" jobs.bosh.networks.default.static_ips.0 ":6868" ))
+
+  template:
+    name: azure_cpi
+    release: bosh-azure-cpi
+
+  ssh_tunnel:
+    port: 22
+    user: vcap
+    host: (( grab jobs.bosh.networks[0].static_ips[0] ))
+    private_key: (( grab meta.azure.ssh_private_key_file ))
+
+  properties:
+    agent:
+      mbus: https://mbus:mbus-password@0.0.0.0:6868
+    blobstore:
+      path: /var/vcap/micro_bosh/data/cache
+      provider: local
+    ntp: (( grab meta.ntp ))
+    azure:
+      ssh_user: vcap
+      environment:             (( grab meta.azure.environment ))
+      subscription_id: (( grab meta.azure.subscription_id))
+      client_id:           (( grab meta.azure.client_id ))
+      client_secret:       (( grab meta.azure.client_secret ))
+      tenant_id:        (( grab meta.azure.tenant_id ))
+      default_security_group: (( grab meta.azure.default_nsg ))
+      resource_group_name:        (( grab meta.azure.resource_group ))
+      storage_account_name:        (( grab meta.azure.storage_account ))
+      ssh_public_key:  (( grab meta.azure.ssh_public_key_data ))
+      
+properties:
+  director:
+    cpi_job: azure_cpi
+  azure: (( grab cloud_provider.properties.azure ))

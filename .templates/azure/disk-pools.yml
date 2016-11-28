@@ -1,0 +1,4 @@
+---
+disk_pools:
+- name: default
+  disk_size: 50_000
