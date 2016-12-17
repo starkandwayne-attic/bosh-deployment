@@ -1,0 +1,34 @@
+---
+meta:
+  google:
+    project: (( param "Please supply your Google Project" ))
+    ssh_user: (( param "What username will be used for establishing the ssh_tunnel (bosh-init only)?" ))
+    private_key: (( param "What private key will be used for establishing the ssh_tunnel (bosh-init only)?" ))
+
+cloud_provider:
+  mbus: (( concat "https://mbus:mbus-password@" jobs.bosh.networks.default.static_ips.0 ":6868" ))
+
+  template:
+    name: google_cpi
+    release: bosh-google-cpi
+
+  ssh_tunnel:
+    port: 22
+    user: (( grab meta.google.ssh_user ))
+    host: (( grab jobs.bosh.networks[0].static_ips[0] ))
+    private_key: (( grab meta.google.private_key ))
+
+  properties:
+    agent:
+      mbus: https://mbus:mbus-password@0.0.0.0:6868
+    blobstore:
+      path: /var/vcap/micro_bosh/data/cache
+      provider: local
+    ntp: (( grab meta.ntp ))
+    google:
+      project: (( grab meta.google.project ))
+
+properties:
+  director:
+    cpi_job: google_cpi
+  google: (( grab cloud_provider.properties.google ))

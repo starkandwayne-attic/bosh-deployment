@@ -1,0 +1,8 @@
+---
+jobs:
+- name: bosh
+  persistent_disk_pool: default
+  resource_pool: bosh
+  templates:
+  - name: google_cpi
+    release: bosh-google-cpi
