@@ -91,6 +91,15 @@ deploying BOSH directors to Google Cloud Plaftorm infrastructure.
 
 
 
+vCloud Director (vCloud) Sites
+======================================
+
+The `vcloud` template will set you up with a structure suitable for
+deploying BOSH directors to vCloud Director infrastructure.
+
+    genesis new site --template vcloud <name>
+
+
 
 Notes
 ======================================
