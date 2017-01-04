@@ -1,0 +1,44 @@
+---
+meta:
+  vcd:
+    url: (( param "Specify the url to connect to vCloud with" ))
+    user: (( param "Specify the username to connect to vCloud with" ))
+    password: (( param "Specify the password to connect to vCloud with" ))
+    entities:
+      organization: (( param "What is the name of your vCloud Organization?" ))
+      virtual_datacenter: (( param "What is the name of your vCloud Virtual Datacenter?" ))
+      vapp_catalog: (( param "What is the name of your vCloud vApp Catalog?" ))
+      media_catalog: (( param "What is the name of your vCloud Media Catalog?" ))
+      media_storage_profile: (( param "What is the name of your vCloud Media Storage Profile?" ))
+      vm_metadata_key: (( param "What key name should be used for vCloud VM Metadata?" ))
+
+cloud_provider:
+  mbus: (( concat "https://mbus:mbus-password@" jobs.bosh.networks.default.static_ips.0 ":6868" ))
+  properties:
+    agent:
+      mbus: https://mbus:mbus-password@0.0.0.0:6868
+    blobstore:
+      path: /var/vcap/micro_bosh/data/cache
+      provider: local
+    ntp: (( grab meta.ntp ))
+    vcd:
+      url: (( grab meta.vcd.url ))
+      user: (( grab meta.vcd.user ))
+      password: (( grab meta.vcd.password ))
+      entities:
+        organization: (( grab meta.vcd.entities.organization ))
+        virtual_datacenter: (( grab meta.vcd.entities.virtual_datacenter ))
+        vapp_catalog: (( grab meta.vcd.entities.vapp_catalog ))
+        media_catalog: (( grab meta.vcd.entities.media_catalog ))
+        media_storage_profile: (( grab meta.vcd.entities.media_storage_profile ))
+        vm_metadata_key: (( grab meta.vcd.entities.vm_metadata_key ))
+      control:
+        wait_max: 900
+  template:
+    name: vcloud_cpi
+    release: bosh-vcloud-cpi
+
+properties:
+  director:
+    cpi_job: vcloud_cpi
+  vcd: (( grab cloud_provider.properties.vcd ))
