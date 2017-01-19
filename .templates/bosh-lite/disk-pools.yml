@@ -1,0 +1,5 @@
+---
+disk_pools:
+- name: default
+  disk_size: 4096
+  cloud_properties: {}

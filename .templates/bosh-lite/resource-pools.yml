@@ -1,0 +1,15 @@
+---
+resource_pools:
+- name: bosh
+  cloud_properties: {}
+  network: default
+  env:
+    bosh:
+      password: (( grab meta.vcap_password ))
+  stemcell: (( grab meta.stemcell ))
+
+compilation:
+  network: default
+  workers: 2
+  reuse_compilation_vms: true
+  cloud_properties: {}
