@@ -1,0 +1,9 @@
+---
+networks:
+- name: default
+  subnets:
+  - gateway: 10.244.240.1
+    range: 10.244.240.0/24
+    static:
+      - 10.244.240.2 - 10.244.240.60
+ 
