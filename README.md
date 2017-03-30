@@ -79,6 +79,14 @@ infrastructure.
 
     genesis new site --template aws <name>
 
+Microsoft Azure (Azure) Sites
+======================================
+
+The `azure` template will set you up with a structure suitable for
+deploying BOSH directors to Azure's ARM
+infrastructure.
+
+    genesis new site --template azure <name>
 
 
 Google Cloud Platform (Google) Sites

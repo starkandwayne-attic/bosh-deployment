@@ -1,0 +1,24 @@
+---
+jobs:
+- name: bosh
+  persistent_disk_pool: default
+  resource_pool: bosh
+  templates:
+  - name: azure_cpi
+    release: bosh-azure-cpi
+  - name: registry
+    release: bosh
+
+properties:
+  registry:
+    address: (( grab jobs.bosh.networks[0].static_ips[0] ))
+    host:    (( grab jobs.bosh.networks[0].static_ips[0] ))
+    db:      (( grab properties.postgres ))
+
+    username: (( grab meta.bosh.registry.user ))
+    password: (( grab meta.bosh.registry.pass ))
+    port: 25777
+    http:
+      user:     (( grab properties.registry.username ))
+      password: (( grab properties.registry.password ))
+      port:     (( grab properties.registry.port ))
